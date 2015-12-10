@@ -50,7 +50,6 @@ extension UISwitch {
       self.bnd_controlEvent.filter { $0 == UIControlEvents.ValueChanged }.observe { [weak self, weak bnd_on] event in
         guard let unwrappedSelf = self, let bnd_on = bnd_on else { return }
         updatingFromSelf = true
-        print("switch value = \(unwrappedSelf.on)")
         bnd_on.next(unwrappedSelf.on)
         updatingFromSelf = false
         

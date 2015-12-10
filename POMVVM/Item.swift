@@ -10,13 +10,8 @@ import Foundation
 import Bond
 
 struct Item {
-    var itemID: String?
     var text: Observable<String?> = Observable(nil)
     var on: Observable<Bool> = Observable(false)
-    
-    init() {
-        
-    }
     
     init(text: String, on: Bool) {
         self.text = Observable(text)

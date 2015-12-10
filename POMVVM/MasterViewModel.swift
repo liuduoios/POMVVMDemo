@@ -28,22 +28,14 @@ extension MasterViewModel: MasterViewControllerBusinessDelegate {
         items.insert(item, atIndex: 0)
     }
     
-    func openSwitchInCellAtRow(row: Int) {
-        
-    }
-    
-    func closeSwitchInCellAtRow(row: Int) {
-        
+    func updateOpenSwitchCount() {
+        openSwitchCount.next(currentOpenSwitchCount())
     }
     
     private func currentOpenSwitchCount() -> Int {
         print(items.array)
         let count = items.array.filter { $0.on.value }.count
         return count
-    }
-    
-    func updateOpenSwitchCount() {
-        openSwitchCount.next(currentOpenSwitchCount())
     }
 }
 

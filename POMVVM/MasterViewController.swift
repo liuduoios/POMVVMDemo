@@ -9,6 +9,9 @@
 import UIKit
 import Bond
 
+// ----------------
+// MARK: - Protocol
+// ----------------
 
 protocol MasterViewControllerDataSource {
     var items: ObservableArray<Item> { get }
@@ -17,47 +20,18 @@ protocol MasterViewControllerDataSource {
 
 protocol MasterViewControllerBusinessDelegate {
     func insertNowDate()
-    func openSwitchInCellAtRow(row: Int)
-    func closeSwitchInCellAtRow(row: Int)
     func updateOpenSwitchCount()
 }
 
+// -------------
+// MARK: - Class
+// -------------
+
 class MasterViewController: UITableViewController, BindableView {
     
-    typealias ViewModelType = protocol <MasterViewControllerDataSource, MasterViewControllerBusinessDelegate, ViewModel>
-    var viewModel: ViewModelType!
-    func bindViewModel(viewModel: ViewModelType) {
-        viewModel.items.lift().bindTo(tableView) { indexPath, dataSource, tableView in
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! DateCell
-            let item = dataSource[indexPath.section][indexPath.row]
-            
-            // 由于Swift中的数组是值类型，所以如果在cell中保存item，这个item实际上是拷贝了一份的item，和原数组没有任何关系
-            // 因此，Cell只能纯粹用来展现数据，并且接收用户操作并回调给ViewController
-            // Cell不能用来保存数据
-            
-            item.text.bindTo(cell.label.bnd_text)
-            item.on.bidirectionalBindTo(cell.cellSwitch.bnd_on)
-            
-            item.on.distinct().observeNew({ (switchOn) -> Void in
-                self.viewModel.updateOpenSwitchCount()
-            })
-            
-            cell.cellSwitch.bnd_on.distinct().observeNew { switchOn in
-                if switchOn {
-                    viewModel.openSwitchInCellAtRow(indexPath.row)
-                } else {
-                    viewModel.closeSwitchInCellAtRow(indexPath.row)
-                }
-            }
-            
-            return cell
-        }
-        
-        viewModel.openSwitchCount
-            .distinct()
-            .map { "共有 \($0) 个开关打开了" }
-            .bindTo(headerLabel.bnd_text)
-    }
+    // ------------------
+    // MARK: - Properties
+    // ------------------
     
     let headerLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.size.width, height: 40))
@@ -65,6 +39,10 @@ class MasterViewController: UITableViewController, BindableView {
         label.textAlignment = .Center
         return label
     }()
+    
+    // ---------------
+    // MARK: - Actions
+    // ---------------
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,14 +51,51 @@ class MasterViewController: UITableViewController, BindableView {
         let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
         self.navigationItem.rightBarButtonItem = addButton
         
+        self.tableView.tableHeaderView = headerLabel
+        
         viewModel = MasterViewModel()
         bindViewModel(viewModel)
-        
-        self.tableView.tableHeaderView = headerLabel
     }
+    
+    // ---------------
+    // MARK: - Actions
+    // ---------------
 
     @objc private func insertNewObject(sender: AnyObject) {
         viewModel.insertNowDate()
+    }
+    
+    // ---------------------------
+    // MARK: - 实现BindableView协议
+    // ---------------------------
+    
+    typealias ViewModelType = protocol <MasterViewControllerDataSource, MasterViewControllerBusinessDelegate, ViewModel>
+    
+    var viewModel: ViewModelType!
+    
+    func bindViewModel(viewModel: ViewModelType) {
+        // 把数据绑定到TableView上
+        viewModel.items.lift().bindTo(tableView) { indexPath, dataSource, tableView in
+            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! DateCell
+            let item = dataSource[indexPath.section][indexPath.row]
+            
+            // 为每个cell绑定cellViewModel
+            let cellViewModel = DateCellViewModel(item: item)
+            cell.bindViewModel(cellViewModel)
+            
+            // 监听cell中开关的变化，来更新“打开开关的总个数”Label的显示内容
+            item.on.distinct().observeNew({ (switchOn) -> Void in
+                self.viewModel.updateOpenSwitchCount()
+            })
+            
+            return cell
+        }
+        
+        // 把“打开开关的总个数”绑定到headerLabel上
+        viewModel.openSwitchCount
+            .distinct()
+            .map { "共有 \($0) 个开关打开了" }
+            .bindTo(headerLabel.bnd_text)
     }
 
     // MARK: - Segues
@@ -91,7 +106,6 @@ class MasterViewController: UITableViewController, BindableView {
                 let controller = segue.destinationViewController as! DetailViewController                
                 
                 // 取出viewModel.items中对应的Item，创建一个DetailViewModel
-                
                 let detailViewModel = DetailViewModel(item: viewModel.items[indexPath.row])
                 controller.viewModel = detailViewModel
             }

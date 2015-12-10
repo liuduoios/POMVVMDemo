@@ -1,19 +1,22 @@
 //
-//  DetailViewModel.swift
+//  DateCellViewModel.swift
 //  POMVVM
 //
-//  Created by 刘铎 on 15/12/9.
+//  Created by 刘铎 on 15/12/10.
 //  Copyright © 2015年 liuduoios. All rights reserved.
 //
 
 import Foundation
 import Bond
 
-// ---------------------------------------------
-// MARK: - 数据源（DetailViewControllerDataSource）
-// ---------------------------------------------
-
-struct DetailViewModel: DetailViewControllerDataSource {
+struct DateCellViewModel: DateCellDataSource {
+    
+    // -------------------------
+    // MARK: - Public Properties
+    // -------------------------
+    
+    private(set) var text: Observable<String?> = Observable(nil)
+    var on: Observable<Bool> = Observable(false)
     
     // ------------------------
     // MARK: - Underlying Model
@@ -30,20 +33,18 @@ struct DetailViewModel: DetailViewControllerDataSource {
         item.on.bidirectionalBindTo(on)
     }
     
-    // -----------------------------------
-    // MARK: - ViewModel Public Properties
-    // -----------------------------------
-    
-    var text: Observable<String?> = Observable(nil)
-    var on: Observable<Bool> = Observable(false)
+    // -----------------
+    // MARK: - Lifecycle
+    // -----------------
     
     init(item: Item) {
         self.item = item
         configureBinding()
     }
+    
 }
 
 // 符合Switchable协议，即已经实现了DetailViewControllerBusinessDelegate中要求的方法
-extension DetailViewModel: DetailViewControllerBusinessDelegate, Switchable {}
+extension DateCellViewModel: DateCellBusinessDelegate, Switchable {}
 
-extension DetailViewModel: ViewModel {}
+extension DateCellViewModel: ViewModel {}
