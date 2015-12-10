@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4185465A4EE58626FA1C0521 /* Pods_POMVVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1658AA4C6079D83BEDDB7A55 /* Pods_POMVVM.framework */; };
-		860A30F81C14794E00565ED6 /* BindableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860A30F71C14794E00565ED6 /* BindableView.swift */; };
-		860A30FA1C14795C00565ED6 /* BindableTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860A30F91C14795C00565ED6 /* BindableTableCell.swift */; };
-		860A30FC1C147E7400565ED6 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860A30FB1C147E7400565ED6 /* ViewModel.swift */; };
 		8646E43F1C18934C00BC8C15 /* Switchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8646E43E1C18934C00BC8C15 /* Switchable.swift */; };
 		8650ECBC1C198035004C1687 /* DateCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8650ECBB1C198035004C1687 /* DateCellViewModel.swift */; };
+		8650ECC01C198B97004C1687 /* BindableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8650ECBD1C198B97004C1687 /* BindableView.swift */; };
+		8650ECC11C198B97004C1687 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8650ECBE1C198B97004C1687 /* ViewModel.swift */; };
+		8650ECC21C198B97004C1687 /* BindableTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8650ECBF1C198B97004C1687 /* BindableTableCell.swift */; };
 		86AB75A11C143EBB00330800 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AB75A01C143EBB00330800 /* AppDelegate.swift */; };
 		86AB75A31C143EBB00330800 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AB75A21C143EBB00330800 /* MasterViewController.swift */; };
 		86AB75A51C143EBB00330800 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AB75A41C143EBB00330800 /* DetailViewController.swift */; };
@@ -27,11 +27,11 @@
 
 /* Begin PBXFileReference section */
 		1658AA4C6079D83BEDDB7A55 /* Pods_POMVVM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_POMVVM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		860A30F71C14794E00565ED6 /* BindableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindableView.swift; sourceTree = "<group>"; };
-		860A30F91C14795C00565ED6 /* BindableTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindableTableCell.swift; sourceTree = "<group>"; };
-		860A30FB1C147E7400565ED6 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		8646E43E1C18934C00BC8C15 /* Switchable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Switchable.swift; sourceTree = "<group>"; };
 		8650ECBB1C198035004C1687 /* DateCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateCellViewModel.swift; sourceTree = "<group>"; };
+		8650ECBD1C198B97004C1687 /* BindableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindableView.swift; sourceTree = "<group>"; };
+		8650ECBE1C198B97004C1687 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		8650ECBF1C198B97004C1687 /* BindableTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindableTableCell.swift; sourceTree = "<group>"; };
 		86AB759D1C143EBB00330800 /* POMVVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = POMVVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86AB75A01C143EBB00330800 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		86AB75A21C143EBB00330800 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -72,11 +72,11 @@
 		860A30F61C14793D00565ED6 /* MVVMBase */ = {
 			isa = PBXGroup;
 			children = (
-				860A30FB1C147E7400565ED6 /* ViewModel.swift */,
-				860A30F71C14794E00565ED6 /* BindableView.swift */,
-				860A30F91C14795C00565ED6 /* BindableTableCell.swift */,
+				8650ECBE1C198B97004C1687 /* ViewModel.swift */,
+				8650ECBD1C198B97004C1687 /* BindableView.swift */,
+				8650ECBF1C198B97004C1687 /* BindableTableCell.swift */,
 			);
-			name = MVVMBase;
+			path = MVVMBase;
 			sourceTree = "<group>";
 		};
 		86AB75941C143EBB00330800 = {
@@ -120,7 +120,7 @@
 				86AB75B81C14618800330800 /* DateCell.swift */,
 				86AB75A41C143EBB00330800 /* DetailViewController.swift */,
 			);
-			name = View;
+			path = View;
 			sourceTree = "<group>";
 		};
 		86AB75B51C14611E00330800 /* ViewModel */ = {
@@ -131,7 +131,7 @@
 				8650ECBB1C198035004C1687 /* DateCellViewModel.swift */,
 				86E607221C17AA1800E444F2 /* DetailViewModel.swift */,
 			);
-			name = ViewModel;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		86E607181C15892200E444F2 /* Model */ = {
@@ -139,7 +139,7 @@
 			children = (
 				86E607191C15893200E444F2 /* Item.swift */,
 			);
-			name = Model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		ED0DDDA89E706E017EE0FF32 /* Frameworks */ = {
@@ -274,16 +274,16 @@
 			files = (
 				86E6071A1C15893200E444F2 /* Item.swift in Sources */,
 				86AB75B71C14614500330800 /* MasterViewModel.swift in Sources */,
-				860A30FC1C147E7400565ED6 /* ViewModel.swift in Sources */,
-				860A30F81C14794E00565ED6 /* BindableView.swift in Sources */,
 				8650ECBC1C198035004C1687 /* DateCellViewModel.swift in Sources */,
+				8650ECC11C198B97004C1687 /* ViewModel.swift in Sources */,
 				86AB75B91C14618800330800 /* DateCell.swift in Sources */,
 				8646E43F1C18934C00BC8C15 /* Switchable.swift in Sources */,
+				8650ECC01C198B97004C1687 /* BindableView.swift in Sources */,
 				86AB75A51C143EBB00330800 /* DetailViewController.swift in Sources */,
 				86AB75A31C143EBB00330800 /* MasterViewController.swift in Sources */,
 				86AB75A11C143EBB00330800 /* AppDelegate.swift in Sources */,
 				86E607231C17AA1800E444F2 /* DetailViewModel.swift in Sources */,
-				860A30FA1C14795C00565ED6 /* BindableTableCell.swift in Sources */,
+				8650ECC21C198B97004C1687 /* BindableTableCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
