@@ -84,9 +84,9 @@ class MasterViewController: UITableViewController, BindableView {
             cell.bindViewModel(cellViewModel)
             
             // 监听cell中开关的变化，来更新“打开开关的总个数”Label的显示内容
-            item.on.distinct().observeNew({ (switchOn) -> Void in
+            item.on.distinct().observeNew { switchOn in
                 self.viewModel.updateOpenSwitchCount()
-            })
+            }
             
             return cell
         }
