@@ -1,0 +1,10 @@
+PODS:
+  - Bond (4.2.0)
+
+DEPENDENCIES:
+  - Bond (~> 4.2.0)
+
+SPEC CHECKSUMS:
+  Bond: 944cdfcc6ffad0fe57742a7fa5c3b6923019f353
+
+COCOAPODS: 0.39.0
