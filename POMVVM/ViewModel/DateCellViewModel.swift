@@ -15,8 +15,8 @@ struct DateCellViewModel: DateCellDataSource {
     // MARK: - Public Properties
     // -------------------------
     
-    private(set) var text: Observable<String?> = Observable(nil)
-    var on: Observable<Bool> = Observable(false)
+    private(set) var dateText: Observable<String?> = Observable(nil)
+    var switchOn: Observable<Bool> = Observable(false)
     
     // ------------------------
     // MARK: - Underlying Model
@@ -28,9 +28,10 @@ struct DateCellViewModel: DateCellDataSource {
         }
     }
     
+    // Model和ViewModel之间的绑定
     private func configureBinding() {
-        item.text.bidirectionalBindTo(text)
-        item.on.bidirectionalBindTo(on)
+        item.currentDate --> dateText
+        item.switchStatus <==> switchOn
     }
     
     // -----------------
@@ -42,9 +43,11 @@ struct DateCellViewModel: DateCellDataSource {
         configureBinding()
     }
     
+    var switchDidFinishCommand: ((Item, Bool) -> Void)?
+    
 }
 
 // 符合Switchable协议，即已经实现了DetailViewControllerBusinessDelegate中要求的方法
-extension DateCellViewModel: DateCellBusinessDelegate, Switchable {}
+extension DateCellViewModel: DateCellBusinessAction {}
 
 extension DateCellViewModel: ViewModel {}

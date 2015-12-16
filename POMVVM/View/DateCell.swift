@@ -14,8 +14,8 @@ import Bond
 // ----------------
 
 protocol DateCellDataSource {
-    var text: Observable<String?> { get }
-    var on: Observable<Bool> { get set }
+    var dateText: Observable<String?> { get }
+    var switchOn: Observable<Bool> { get set }
     var textColor: Observable<UIColor> { get }
 }
 
@@ -26,10 +26,7 @@ extension DateCellDataSource {
     }
 }
 
-protocol DateCellBusinessDelegate {
-    mutating func openSwitch()
-    mutating func closeSwitch()
-}
+protocol DateCellBusinessAction: Switchable {}
 
 // -------------
 // MARK: - Class
@@ -48,7 +45,7 @@ class DateCell: UITableViewCell, BindableTableCell {
     // MARK: - 实现BindableTableCell协议
     // --------------------------------
     
-    typealias ViewModelType = protocol <DateCellDataSource, DateCellBusinessDelegate, ViewModel>
+    typealias ViewModelType = protocol <DateCellDataSource, DateCellBusinessAction, ViewModel>
     
     var viewModel: ViewModelType!
     
@@ -58,21 +55,19 @@ class DateCell: UITableViewCell, BindableTableCell {
         bnd_bag.dispose()
         
         // ViewModel中关于text的属性单向绑定到label的相关属性上
-        viewModel.text.bindTo(label.bnd_text)
-        viewModel.textColor.bindTo(label.bnd_textColor)
+        viewModel.dateText --> label.bnd_text
+        viewModel.textColor --> label.bnd_textColor
         
-        // ViewModel的on和UISwitch的on双向绑定
-        viewModel.on.bidirectionalBindTo(cellSwitch.bnd_on)
+        // ViewModel的on和UISwitch的on单向绑定
+        viewModel.switchOn <==> cellSwitch.bnd_on
         
-        cellSwitch.bnd_on
-            .distinct()
-            .observeNew { switchOn in
-                if switchOn {
-                    viewModel.openSwitch()
-                } else {
-                    viewModel.closeSwitch()
-                }
-            }.disposeIn(bnd_bag)
+        viewModel.switchOn.distinct().observeNew { on in
+            if on {
+                viewModel.openSwitch()
+            } else {
+                viewModel.closeSwitch()
+            }
+        }.disposeIn(bnd_bag)
     }
 }
 

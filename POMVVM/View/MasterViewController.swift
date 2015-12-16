@@ -18,9 +18,9 @@ protocol MasterViewControllerDataSource {
     var openSwitchCount: Observable<Int> { get }
 }
 
-protocol MasterViewControllerBusinessDelegate {
+protocol MasterViewControllerBusinessAction {
     func insertNowDate()
-    func updateOpenSwitchCount()
+    func deleteRowAtIndex(index: Int)
 }
 
 // -------------
@@ -69,24 +69,19 @@ class MasterViewController: UITableViewController, BindableView {
     // MARK: - 实现BindableView协议
     // ---------------------------
     
-    typealias ViewModelType = protocol <MasterViewControllerDataSource, MasterViewControllerBusinessDelegate, ViewModel>
+    typealias ViewModelType = protocol <MasterViewControllerDataSource, MasterViewControllerBusinessAction, ViewModel>
     
     var viewModel: ViewModelType!
     
     func bindViewModel(viewModel: ViewModelType) {
         // 把数据绑定到TableView上
-        viewModel.items.lift().bindTo(tableView) { indexPath, dataSource, tableView in
+        viewModel.items.lift().bindTo(tableView, proxyDataSource: self) { (indexPath, dataSource, tableView) -> UITableViewCell in
             let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! DateCell
             let item = dataSource[indexPath.section][indexPath.row]
             
             // 为每个cell绑定cellViewModel
             let cellViewModel = DateCellViewModel(item: item)
             cell.bindViewModel(cellViewModel)
-            
-            // 监听cell中开关的变化，来更新“打开开关的总个数”Label的显示内容
-            item.on.distinct().observeNew { switchOn in
-                self.viewModel.updateOpenSwitchCount()
-            }
             
             return cell
         }
@@ -95,7 +90,7 @@ class MasterViewController: UITableViewController, BindableView {
         viewModel.openSwitchCount
             .distinct()
             .map { "共有 \($0) 个开关打开了" }
-            .bindTo(headerLabel.bnd_text)
+            --> headerLabel.bnd_text
     }
 
     // MARK: - Segues
@@ -114,3 +109,14 @@ class MasterViewController: UITableViewController, BindableView {
 
 }
 
+extension MasterViewController: BNDTableViewProxyDataSource {
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            viewModel.deleteRowAtIndex(indexPath.row)
+        }
+    }
+}

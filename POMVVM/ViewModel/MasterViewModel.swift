@@ -16,26 +16,43 @@ import Bond
 struct MasterViewModel: MasterViewControllerDataSource {
     var items: ObservableArray<Item> = ObservableArray([Item]())
     var openSwitchCount: Observable<Int> = Observable(0)
+    
+    init() {
+        items.observe { event in
+            switch event.operation {
+            case .Insert(let elements, _):
+                for item in elements {
+                    item.switchStatus.distinct().observeNew({ (on) -> Void in
+                        self.openSwitchCount.next(self.currentOpenSwitchCount())
+                    })
+                }
+            case .Remove(_):
+                self.openSwitchCount.next(self.currentOpenSwitchCount())
+            default:
+                break
+            }
+        }
+    }
+    
+    private func currentOpenSwitchCount() -> Int {
+        return items.array
+            .filter { $0.switchStatus.value }
+            .count
+    }
 }
 
 // -----------------------------------------------------
 // MARK: - 业务逻辑（MasterViewControllerBusinessDelegate）
 // -----------------------------------------------------
 
-extension MasterViewModel: MasterViewControllerBusinessDelegate {
+extension MasterViewModel: MasterViewControllerBusinessAction {
     func insertNowDate() {
-        let item = Item(text: NSDate().description, on: false)
+        let item = Item(currentDate: NSDate().description, status: false)
         items.insert(item, atIndex: 0)
     }
     
-    func updateOpenSwitchCount() {
-        openSwitchCount.next(currentOpenSwitchCount())
-    }
-    
-    private func currentOpenSwitchCount() -> Int {
-        print(items.array)
-        let count = items.array.filter { $0.on.value }.count
-        return count
+    func deleteRowAtIndex(index: Int) {
+        items.removeAtIndex(index)
     }
 }
 

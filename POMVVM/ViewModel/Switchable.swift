@@ -13,14 +13,13 @@ import Bond
  *  抽取公共业务逻辑到单独Protocol中，并给出默认实现，来实现代码复用
  */
 protocol Switchable {
-    var on: Observable<Bool> { get set }
     mutating func openSwitch()
     mutating func closeSwitch()
 }
 
 extension ViewModel where Self: Switchable {
     func openSwitch() {
-        print("I have opened the switch.")
+        print("I have opend the switch.")
     }
     
     func closeSwitch() {

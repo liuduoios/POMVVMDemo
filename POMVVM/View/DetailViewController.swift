@@ -14,14 +14,11 @@ import Bond
 // ----------------
 
 protocol DetailViewControllerDataSource {
-    var on: Observable<Bool> { get set }
-    var text: Observable<String?> { get set }
+    var detailSwitchOn: Observable<Bool> { get set }
+    var detailText: Observable<String?> { get set }
 }
 
-protocol DetailViewControllerBusinessDelegate {
-    func openSwitch()
-    func closeSwitch()
-}
+protocol DetailViewControllerBusinessAction: Switchable {}
 
 // -------------
 // MARK: - Class
@@ -60,18 +57,19 @@ class DetailViewController: UIViewController, BindableView {
     // MARK: - 实现BindableView协议
     // ---------------------------
     
-    typealias ViewModelType = protocol <DetailViewControllerDataSource, DetailViewControllerBusinessDelegate, ViewModel>
+    typealias ViewModelType = protocol <DetailViewControllerDataSource, DetailViewControllerBusinessAction, ViewModel>
     
     var viewModel: ViewModelType!
     
     func bindViewModel(viewModel: ViewModelType) {
         // ViewModel的text和TextField的text双向绑定
-        viewModel.text.bidirectionalBindTo(detailTextField.bnd_text)
+        viewModel.detailText <==> detailTextField.bnd_text
+        
         // ViewModel的text单项绑定到Label上
-        viewModel.text.bindTo(detailDescriptionLabel.bnd_text)
+        viewModel.detailText --> detailDescriptionLabel.bnd_text
         
         // ViewModel的on和UISwitch的on双向绑定
-        viewModel.on.bidirectionalBindTo(detailSwitch.bnd_on)
+        viewModel.detailSwitchOn <==> detailSwitch.bnd_on
         
         detailSwitch.bnd_on.observeNew { switchOn in
             if switchOn {
@@ -79,7 +77,7 @@ class DetailViewController: UIViewController, BindableView {
             } else {
                 viewModel.closeSwitch()
             }
-        }
+        }.disposeIn(bnd_bag)
     }
 }
 

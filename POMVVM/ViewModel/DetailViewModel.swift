@@ -26,16 +26,16 @@ struct DetailViewModel: DetailViewControllerDataSource {
     }
     
     private func configureBinding() {
-        item.text.bidirectionalBindTo(text)
-        item.on.bidirectionalBindTo(on)
+        item.currentDate <==> detailText
+        item.switchStatus <==> detailSwitchOn
     }
     
     // -----------------------------------
     // MARK: - ViewModel Public Properties
     // -----------------------------------
     
-    var text: Observable<String?> = Observable(nil)
-    var on: Observable<Bool> = Observable(false)
+    var detailText: Observable<String?> = Observable(nil)
+    var detailSwitchOn: Observable<Bool> = Observable(false)
     
     init(item: Item) {
         self.item = item
@@ -44,6 +44,12 @@ struct DetailViewModel: DetailViewControllerDataSource {
 }
 
 // 符合Switchable协议，即已经实现了DetailViewControllerBusinessDelegate中要求的方法
-extension DetailViewModel: DetailViewControllerBusinessDelegate, Switchable {}
+extension DetailViewModel: DetailViewControllerBusinessAction {
+    var switchDidFinishCallback: (Bool -> Void)? {
+        return { on in
+//            self.item.status.next(on ? .On : .Off)
+        }
+    }
+}
 
 extension DetailViewModel: ViewModel {}

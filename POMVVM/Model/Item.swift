@@ -10,17 +10,24 @@ import Foundation
 import Bond
 
 struct Item {
-    var text: Observable<String?> = Observable(nil)
-    var on: Observable<Bool> = Observable(false)
+    var itemID: String = NSUUID().UUIDString
+    var currentDate: Observable<String?> = Observable(nil)
+    var switchStatus: Observable<Bool> = Observable(false)
     
-    init(text: String, on: Bool) {
-        self.text = Observable(text)
-        self.on = Observable(on)
+    init(currentDate: String, status: Bool) {
+        self.currentDate = Observable(currentDate)
+        self.switchStatus = Observable(status)
     }
 }
 
 extension Item: CustomDebugStringConvertible {
     var debugDescription: String {
-        return "on = \(on.value)"
+        return "on = \(currentDate.value)"
     }
 }
+
+func == (lhs: Item, rhs: Item) -> Bool {
+    return lhs.itemID == rhs.itemID
+}
+
+extension Item: Equatable {}
