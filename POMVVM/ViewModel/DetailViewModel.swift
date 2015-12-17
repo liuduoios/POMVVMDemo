@@ -44,12 +44,6 @@ struct DetailViewModel: DetailViewControllerDataSource {
 }
 
 // 符合Switchable协议，即已经实现了DetailViewControllerBusinessDelegate中要求的方法
-extension DetailViewModel: DetailViewControllerBusinessAction {
-    var switchDidFinishCallback: (Bool -> Void)? {
-        return { on in
-//            self.item.status.next(on ? .On : .Off)
-        }
-    }
-}
+extension DetailViewModel: DetailViewControllerBusinessAction {}
 
 extension DetailViewModel: ViewModel {}

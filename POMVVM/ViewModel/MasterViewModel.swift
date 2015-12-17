@@ -22,9 +22,9 @@ struct MasterViewModel: MasterViewControllerDataSource {
             switch event.operation {
             case .Insert(let elements, _):
                 for item in elements {
-                    item.switchStatus.distinct().observeNew({ (on) -> Void in
+                    item.switchStatus.distinct().observeNew { on in
                         self.openSwitchCount.next(self.currentOpenSwitchCount())
-                    })
+                    }
                 }
             case .Remove(_):
                 self.openSwitchCount.next(self.currentOpenSwitchCount())

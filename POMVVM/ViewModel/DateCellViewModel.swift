@@ -42,9 +42,6 @@ struct DateCellViewModel: DateCellDataSource {
         self.item = item
         configureBinding()
     }
-    
-    var switchDidFinishCommand: ((Item, Bool) -> Void)?
-    
 }
 
 // 符合Switchable协议，即已经实现了DetailViewControllerBusinessDelegate中要求的方法
